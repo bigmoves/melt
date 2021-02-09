@@ -1,0 +1,25 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.2.1",
+    "@emotion/react": "^11.1.4",
+    "@emotion/styled": "^11.0.0",
+    "@fontsource/montserrat": "^4.2.0",
+    "@fontsource/open-sans": "^4.1.0",
+    "@fontsource/work-sans": "^4.2.0",
+    "axios": "^0.21.1",
+    "framer-motion": "^3.2.2-rc.1",
+    "js-cookie": "^2.2.1",
+    "next": "10.0.6",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "recoil": "^0.1.2"
+  }
+}
