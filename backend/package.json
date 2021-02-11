@@ -12,7 +12,6 @@
   "devDependencies": {},
   "dependencies": {
     "knex": "<0.20.0",
-    "sqlite3": "5.0.0",
     "strapi": "3.4.5",
     "strapi-admin": "3.4.5",
     "strapi-connector-bookshelf": "3.4.5",
@@ -22,7 +21,8 @@
     "strapi-plugin-upload": "3.4.5",
     "strapi-plugin-users-permissions": "3.4.5",
     "strapi-utils": "3.4.5",
-    "stripe": "^8.134.0"
+    "stripe": "^8.134.0",
+    "pg": "8.5.1"
   },
   "author": {
     "name": "A Strapi developer"
