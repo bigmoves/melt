@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "items",
+  "collectionName": "configs",
   "info": {
-    "name": "items",
+    "name": "Config",
     "description": ""
   },
   "options": {
@@ -11,11 +11,8 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "title": {
-      "type": "string"
-    },
-    "images": {
-      "collection": "file",
+    "aboutImage": {
+      "model": "file",
       "via": "related",
       "allowedTypes": [
         "images",
@@ -25,15 +22,19 @@
       "plugin": "upload",
       "required": false
     },
-    "price": {
-      "type": "decimal"
-    },
-    "description": {
+    "bio": {
       "type": "text"
     },
-    "collectionItems": {
-      "via": "items",
-      "model": "collection"
+    "logo": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
     }
   }
 }
