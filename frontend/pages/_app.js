@@ -1,15 +1,13 @@
 import { RecoilRoot } from "recoil";
-import { ThemeProvider, extendTheme, CSSReset } from "@chakra-ui/react";
-import "@fontsource/work-sans";
-import "@fontsource/montserrat";
-import "@fontsource/montserrat/900.css";
+import { ChakraProvider, extendTheme, CSSReset } from "@chakra-ui/react";
+import Fonts from "../utils/fonts";
 import { initCart } from "../components/useCart";
 
 const theme = extendTheme({
   fonts: {
-    body: "'Work Sans', sans-serif",
-    heading: "'Montserrat', sans-serif",
-    mono: "'My Monospaced Font', monospace",
+    body: "Work Sans",
+    heading: "Work Sans",
+    mono: "monospace",
   },
 });
 
@@ -22,10 +20,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <RecoilRoot>
       <CartProvider>
-        <ThemeProvider theme={theme}>
+        <ChakraProvider theme={theme}>
           <CSSReset />
           <Component {...pageProps} />
-        </ThemeProvider>
+        </ChakraProvider>
+        <Fonts />
       </CartProvider>
     </RecoilRoot>
   );

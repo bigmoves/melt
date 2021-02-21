@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import Cookies from "js-cookie";
 import { atom } from "recoil";
 
-const apiHost = "http://localhost:1337";
+const apiHost = "http://64.227.109.182";
 
 export const cartItemsState = atom({
   key: "cartItemsState",
@@ -14,18 +14,6 @@ export const cartTotalState = atom({
   key: "cartTotalState",
   default: 0,
 });
-
-const stripItemsForCookie = (items) => {
-  return items.map(({ id, title, quantity, price, images }) => ({
-    id,
-    title,
-    quantity,
-    price,
-    images: [
-      (images?.length && `${apiHost}${images?.[0].formats.medium.url}`) || null,
-    ].filter((i) => !!i),
-  }));
-};
 
 export const initCart = () => {
   const [, setItems] = useRecoilState(cartItemsState);
@@ -54,15 +42,14 @@ const useCart = () => {
     const newItems = [...items, { ...item, quantity: 1 }];
     setItems(newItems);
     updateTotal(newItems, setTotal);
-    console.log(stripItemsForCookie(newItems));
-    Cookies.set("cart", stripItemsForCookie(newItems));
+    Cookies.set("cart", newItems);
   };
 
   const removeFromCart = (itemId) => {
     const newItems = items.filter((item) => itemId !== item.id);
     setItems(newItems);
     updateTotal(newItems, setTotal);
-    Cookies.set("cart", stripItemsForCookie(newItems));
+    Cookies.set("cart", newItems);
   };
 
   return { total, items, setItems, addToCart, removeFromCart };

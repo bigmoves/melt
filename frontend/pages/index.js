@@ -1,46 +1,95 @@
-import React from "react";
-import { SimpleGrid, Box, Heading, Text, Image } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import {
+  SimpleGrid,
+  Box,
+  Text,
+  Flex,
+  Divider,
+  Heading,
+  Stack,
+} from "@chakra-ui/react";
 import axios from "axios";
-import Link from "next/link";
-import Header from "../components/Header";
+import Image from "next/image";
+import Header from "../components/header";
+import { useRouter } from "next/router";
+import Link from "../components/link";
+import Logo from "../components/logo";
+import Layout from "../components/layout";
 
-const apiHost = "http://localhost:1337";
+const apiHost = "http://64.227.109.182";
 
-const Item = ({ item }) => (
-  <Box borderWidth="1px" p={4}>
-    {item.images.length > 0 ? (
-      <Image
-        src={`${apiHost}${item?.images?.[0].formats.medium.url}`}
-        alt="Segun Adebayo"
-      />
-    ) : null}
-    <Text>{item.title}</Text>
-    <Text>{item.price}</Text>
-    <Link href={`/items/${item.id}`}>Link</Link>
-  </Box>
-);
+const Item = ({ item }) => {
+  const router = useRouter();
 
-const Home = ({ items, error }) => {
+  const handleClick = (e) => {
+    e.preventDefault();
+    router.push(`/items/${item.id}`);
+  };
+
+  const image = item.images[0];
+  const imageUrl = item ? image.formats.medium.url : "";
+
+  return (
+    <Box cursor="pointer" onClick={handleClick}>
+      {item.images.length > 0 ? (
+        <Image
+          className="item-image"
+          src={`${apiHost}${imageUrl}`}
+          alt="melt"
+          width={image.formats.medium.width}
+          height={image.formats.medium.height}
+        />
+      ) : null}
+      <style jsx global>{`
+        .item-image {
+          border-radius: 5px;
+        }
+      `}</style>
+    </Box>
+  );
+};
+
+const Home = ({ config, collections, error }) => {
+  const { query, push } = useRouter();
+  let collection = collections.find(
+    (c) => c.name.toLowerCase() === query?.collection?.toLowerCase()
+  );
+
+  if (!collection) {
+    collection = collections[0];
+  }
+
+  useEffect(() => {
+    push(`/?collection=${collection.name.toLowerCase()}`);
+  }, []);
+
   if (error) {
     return <div>An error occured: {error.message}</div>;
   }
+
   return (
-    <>
-      <Header />
-      <SimpleGrid columns={3} spacing={10}>
-        {items.map((item) => (
-          <Item item={item} />
+    <Layout collections={collections} config={config}>
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 4, md: 10 }}>
+        {collection.items.map((item) => (
+          <Item key={item.id} item={item} />
         ))}
       </SimpleGrid>
-    </>
+    </Layout>
   );
 };
 
 Home.getInitialProps = async (ctx) => {
   try {
-    const res = await axios.get("http://localhost:1337/items");
-    const items = res.data;
-    return { items };
+    const collections = await axios
+      .get("http://64.227.109.182/collections")
+      .then((r) => r.data);
+    const config = await axios
+      .get("http://64.227.109.182/configs/1")
+      .then((r) => r.data);
+    return {
+      config,
+      collections: collections.sort((a, b) => a.order - b.order),
+    };
   } catch (error) {
     return { error };
   }
