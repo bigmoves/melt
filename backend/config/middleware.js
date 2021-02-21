@@ -3,7 +3,7 @@ module.exports = {
     cors: {
       origin: [
         "http://localhost",
-        "https://melt-g2nx2a7af-chadtmiller15.vercel.app",
+        "https://melt-chadtmiller15.vercel.app/",
         "https://melt.vercel.app",
       ],
     },
