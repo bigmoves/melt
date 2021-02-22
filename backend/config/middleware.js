@@ -2,8 +2,8 @@ module.exports = {
   settings: {
     cors: {
       enabled: true,
-      origin: ['*']
-    }
+      origin: ["*"],
+    },
     // cors: {
     //   origin: [
     //     "http://localhost",
@@ -11,7 +11,6 @@ module.exports = {
     //     "https://melt-chadtmiller15.vercel.app",
     //     "https://melt.vercel.app",
     //   ],
-    },
     parser: {
       enabled: true,
       multipart: true,
