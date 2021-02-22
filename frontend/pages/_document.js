@@ -16,10 +16,6 @@ class MyDocument extends Document {
             href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
           />
           <script src="https://js.stripe.com/v3/"></script>
-          <meta
-            httpEquiv="Content-Security-Policy"
-            content="upgrade-insecure-requests"
-          />
         </Head>
         <body style={{ background: "lavenderblush" }}>
           <Main />
