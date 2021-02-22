@@ -11,6 +11,15 @@ module.exports = {
     //   //   "https://melt.vercel.app",
     //   // ],
     // },
+    cors: {
+      headers: [
+        "Content-Type",
+        "Authorization",
+        "Origin",
+        "Accept",
+        "Cache-Control",
+      ],
+    },
     parser: {
       enabled: true,
       multipart: true,
