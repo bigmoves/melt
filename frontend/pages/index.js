@@ -16,7 +16,7 @@ import Link from "../components/link";
 import Logo from "../components/logo";
 import Layout from "../components/layout";
 
-const apiHost = "http://64.227.109.182";
+const apiHost = "https://api.studsnstuff.dev";
 
 const Item = ({ item }) => {
   const router = useRouter();
@@ -81,10 +81,10 @@ const Home = ({ config, collections, error }) => {
 Home.getInitialProps = async (ctx) => {
   try {
     const collections = await axios
-      .get("http://64.227.109.182/collections")
+      .get("https://api.studsnstuff.dev/collections")
       .then((r) => r.data);
     const config = await axios
-      .get("http://64.227.109.182/configs/1")
+      .get("https://api.studsnstuff.dev/configs/1")
       .then((r) => r.data);
     return {
       config,

@@ -4,7 +4,7 @@ import axios from "axios";
 import Image from "next/image";
 import Layout from "../components/layout";
 
-const apiHost = "http://64.227.109.182";
+const apiHost = "https://api.studsnstuff.dev";
 
 const About = ({ config, error }) => {
   if (error) {
@@ -31,7 +31,7 @@ const About = ({ config, error }) => {
 
 About.getInitialProps = async (ctx) => {
   try {
-    const res = await axios.get("http://64.227.109.182/configs/1");
+    const res = await axios.get("https://api.studsnstuff.dev/configs/1");
     const config = res.data;
     return { config };
   } catch (error) {

@@ -15,7 +15,7 @@ import axios from "axios";
 import Header from "../../components/header";
 import useCart from "../../components/useCart";
 
-const apiHost = "http://64.227.109.182";
+const apiHost = "https://api.studsnstuff.dev";
 
 const stripItemForCart = ({ id, title, quantity, price, images }) => {
   let image = null;

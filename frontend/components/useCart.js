@@ -3,8 +3,6 @@ import { useRecoilState } from "recoil";
 import Cookies from "js-cookie";
 import { atom } from "recoil";
 
-const apiHost = "http://64.227.109.182";
-
 export const cartItemsState = atom({
   key: "cartItemsState",
   default: [],

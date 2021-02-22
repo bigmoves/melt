@@ -8,7 +8,7 @@ export const checkout = (items) => {
   //   : process.env.STRIPE_PUBLIC_API_KEY;
   const stripe = Stripe(stripeKey);
 
-  return axios("http://64.227.109.182/checkout", {
+  return axios("https://api.studsnstuff.dev/checkout", {
     method: "post",
     // withCredentials: true,
     data: { items },
