@@ -13,6 +13,11 @@ export const cartTotalState = atom({
   default: 0,
 });
 
+export const cartWiggleState = atom({
+  key: "cartWiggleState",
+  default: false,
+});
+
 export const initCart = () => {
   const [, setItems] = useRecoilState(cartItemsState);
   let [, setTotal] = useRecoilState(cartTotalState);
@@ -35,11 +40,20 @@ const updateTotal = (items, setTotal) => {
 const useCart = () => {
   const [items, setItems] = useRecoilState(cartItemsState);
   let [total, setTotal] = useRecoilState(cartTotalState);
+  const [wiggle, setWiggle] = useRecoilState(cartWiggleState);
+
+  const wiggleCart = () => {
+    setWiggle(true);
+    setTimeout(() => {
+      setWiggle(false);
+    }, 2000);
+  };
 
   const addToCart = (item) => {
     const newItems = [...items, { ...item, quantity: 1 }];
     setItems(newItems);
     updateTotal(newItems, setTotal);
+    wiggleCart();
     Cookies.set("cart", newItems);
   };
 
@@ -50,7 +64,7 @@ const useCart = () => {
     Cookies.set("cart", newItems);
   };
 
-  return { total, items, setItems, addToCart, removeFromCart };
+  return { total, items, setItems, addToCart, removeFromCart, wiggle };
 };
 
 export default useCart;
