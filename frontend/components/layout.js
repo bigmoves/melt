@@ -30,17 +30,24 @@ const Layout = (props) => {
       <Flex pl="4vw" pr="4vw">
         <Box
           bgImg="url(/wiggle_L.svg)"
-          height="1000px"
-          width="200px"
+          minH="600px"
+          flex="0 0 100px"
           backgroundSize="contain"
         ></Box>
-        <Box pl="4vw" pr="4vw" pb="4vw" pt="2vw">
+        <Flex
+          pl="4vw"
+          pr="4vw"
+          pb="4vw"
+          pt="2vw"
+          flex={1}
+          justifyContent="center"
+        >
           {props.children}
-        </Box>
+        </Flex>
         <Box
           bgImg="url(/wiggle_R.svg)"
-          height="1000px"
-          width="200px"
+          minH="600px"
+          flex="0 0 100px"
           backgroundSize="contain"
         ></Box>
       </Flex>

@@ -20,7 +20,7 @@ const Cart = ({ config }) => {
   console.log({ items });
   return (
     <Layout config={config} collections={[]}>
-      <Flex pr="4vw" pl="4vw" pt="4vw" justifyContent="center">
+      <Flex justifyContent="center">
         <Flex direction="column">
           <Flex direction="row">
             <Heading pb="2vw" flex={1}>

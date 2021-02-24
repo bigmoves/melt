@@ -9,6 +9,13 @@ const theme = extendTheme({
     heading: "Work Sans",
     mono: "monospace",
   },
+  components: {
+    Input: {
+      baseStyle: {
+        borderColor: "palevioletred",
+      },
+    },
+  },
 });
 
 const CartProvider = ({ children }) => {

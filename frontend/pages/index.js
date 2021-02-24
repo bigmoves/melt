@@ -69,11 +69,13 @@ const Home = ({ config, collections, error }) => {
 
   return (
     <Layout collections={collections} config={config}>
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 4, md: 10 }}>
-        {collection.items.map((item) => (
-          <Item key={item.id} item={item} />
-        ))}
-      </SimpleGrid>
+      {collection.items.length > 0 ? (
+        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 4, md: 10 }}>
+          {collection.items.map((item) => (
+            <Item key={item.id} item={item} />
+          ))}
+        </SimpleGrid>
+      ) : null}
     </Layout>
   );
 };
