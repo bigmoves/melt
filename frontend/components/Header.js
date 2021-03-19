@@ -1,20 +1,22 @@
-import { Box, Flex, Heading, Img, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Flex, IconButton, useDisclosure } from "@chakra-ui/react";
 import Cart from "./cart";
 import Link from "./link";
 import Logo from "./logo";
 import useCart from "./useCart";
+import { RiMenu3Fill } from "react-icons/ri";
+import MobileNav from "./mobile-nav";
 
 function Header(props) {
-  const { items, wiggle } = useCart();
+  const { products, wiggle } = useCart();
+  const { isOpen, onToggle, onClose } = useDisclosure();
+
   return (
     <Flex
       as="header"
       alignItems="center"
-      width="100%"
       pt="4vw"
-      pl="12vw"
-      pr="12vw"
+      pl={{ base: 0, md: "12vw" }}
+      pr={{ base: 0, md: "12vw" }}
       {...props}
     >
       <Box flex={1} display={{ base: "none", md: "block" }}>
@@ -36,6 +38,21 @@ function Header(props) {
           <Logo fill="palevioletred" />
         </Link>
       </Flex>
+
+      <Flex
+        flex={1}
+        display={{ base: "flex", md: "none" }}
+        justifyContent="center"
+      >
+        <IconButton
+          as={RiMenu3Fill}
+          boxSize={10}
+          color="palevioletred"
+          onClick={onToggle}
+        />
+      </Flex>
+
+      <MobileNav isOpen={isOpen} onClose={onClose} />
 
       <Flex
         flex={1}
@@ -75,7 +92,7 @@ function Header(props) {
             }
           `}</style>
           <Box position="relative">
-            {items.length > 0 ? (
+            {products.length > 0 ? (
               <Flex
                 position="absolute"
                 w={7}
@@ -89,7 +106,7 @@ function Header(props) {
                 top={0}
                 right={0}
               >
-                {items.length}
+                {products.length}
               </Flex>
             ) : null}
             <Cart className={`cart ${wiggle ? "shake" : ""}`} fill="black" />

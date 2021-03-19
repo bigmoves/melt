@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Input,
@@ -8,53 +8,60 @@ import {
   FormErrorMessage,
   Button,
   Box,
+  Text,
 } from "@chakra-ui/react";
-import axios from "axios";
 import Layout from "../components/layout";
 import { useForm } from "react-hook-form";
 
-const apiHost = "https://api.studsnstuff.dev";
+import Airtable from "airtable";
 
-const Contact = ({ config, error }) => {
+const base = new Airtable({ apiKey: "keyTyIzEu5Xh7Wfe9" }).base(
+  "appLtM7uiOSFVdPBl"
+);
+
+const Contact = ({ error }) => {
   const { register, handleSubmit, reset, errors } = useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [messageSent, setMessageSent] = useState(false);
 
   if (error) {
     return <div>An error occured: {error.message}</div>;
   }
 
   const submit = async (data) => {
-    await axios.post(`${apiHost}/contact`, data);
+    setMessageSent(false);
+    setIsSubmitting(true);
+    await base("Messages").create([
+      {
+        fields: {
+          name: data.name,
+          email: data.email,
+          message: data.message,
+        },
+      },
+    ]);
+    setIsSubmitting(false);
+    setMessageSent(true);
     reset();
   };
 
   return (
-    <Layout config={config} collections={[]}>
+    <Layout collections={[]}>
       <Box
         as="form"
-        pt="4vw"
         direction="column"
+        width={{ base: "100%", md: "500px" }}
         onSubmit={handleSubmit(submit)}
       >
-        <Flex pb={5}>
-          <FormControl id="first" pr={5} isInvalid={errors.first}>
-            <FormLabel>First</FormLabel>
-            <Input
-              borderColor="palevioletred"
-              name="first"
-              ref={register({ required: true })}
-            />
-            <FormErrorMessage>Enter a first name</FormErrorMessage>
-          </FormControl>
-          <FormControl id="last" isInvalid={errors.last}>
-            <FormLabel>Last</FormLabel>
-            <Input
-              borderColor="palevioletred"
-              name="last"
-              ref={register({ required: true })}
-            />
-            <FormErrorMessage>Enter a last name</FormErrorMessage>
-          </FormControl>
-        </Flex>
+        <FormControl id="first" pb={5} isInvalid={errors.name}>
+          <FormLabel>Name</FormLabel>
+          <Input
+            borderColor="palevioletred"
+            name="name"
+            ref={register({ required: true })}
+          />
+          <FormErrorMessage>Enter a name</FormErrorMessage>
+        </FormControl>
         <FormControl id="email" pb={5} isInvalid={errors.email}>
           <FormLabel>Email</FormLabel>
           <Input
@@ -63,15 +70,6 @@ const Contact = ({ config, error }) => {
             ref={register({ required: true })}
           />
           <FormErrorMessage>Enter an email</FormErrorMessage>
-        </FormControl>
-        <FormControl id="subject" pb={5} isInvalid={errors.subject}>
-          <FormLabel>Subject</FormLabel>
-          <Input
-            borderColor="palevioletred"
-            name="subject"
-            ref={register({ required: true })}
-          />
-          <FormErrorMessage>Enter a subject</FormErrorMessage>
         </FormControl>
         <FormControl id="message" pb={5} isInvalid={errors.message}>
           <FormLabel>Message</FormLabel>
@@ -84,22 +82,17 @@ const Contact = ({ config, error }) => {
           <FormErrorMessage>Enter a message</FormErrorMessage>
         </FormControl>
 
-        <Button type="submit" colorScheme="blackAlpha">
+        <Button type="submit" colorScheme="blackAlpha" isLoading={isSubmitting}>
           Submit
         </Button>
+        {messageSent && (
+          <Text pt={5} pb={5}>
+            Message sent. Talk to you soon ✨
+          </Text>
+        )}
       </Box>
     </Layout>
   );
-};
-
-Contact.getInitialProps = async (ctx) => {
-  try {
-    const res = await axios.get(`${apiHost}/configs/1`);
-    const config = res.data;
-    return { config };
-  } catch (error) {
-    return { error };
-  }
 };
 
 export default Contact;

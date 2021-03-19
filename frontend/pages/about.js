@@ -1,41 +1,46 @@
 import React from "react";
 import { Box, Text, Flex } from "@chakra-ui/react";
-import axios from "axios";
 import Image from "next/image";
 import Layout from "../components/layout";
 
-const apiHost = "https://api.studsnstuff.dev";
+import Airtable from "airtable";
+
+const base = new Airtable({ apiKey: "keyTyIzEu5Xh7Wfe9" }).base(
+  "appLtM7uiOSFVdPBl"
+);
 
 const About = ({ config, error }) => {
   if (error) {
     return <div>An error occured: {error.message}</div>;
   }
   return (
-    <Layout config={config} collections={[]}>
-      <Flex direction={{ base: "column", md: "row" }}>
-        <Box flex={1} pr="3vw">
-          <Image
-            src={`${apiHost}${config.aboutImage.formats.large.url}`}
-            alt="mel"
-            width={config.aboutImage.formats.large.width}
-            height={config.aboutImage.formats.large.height}
-          />
-        </Box>
-        <Box pt="4vw" flex={1}>
-          <Text>{config.bio}</Text>
-        </Box>
-      </Flex>
+    <Layout collections={[]} direction={{ base: "column", md: "row" }} flex={1}>
+      <Box flex={1}>
+        <Image
+          src={`${config.fields.aboutImage[0].thumbnails.large.url}`}
+          alt="mel"
+          width={config.fields.aboutImage[0].thumbnails.large.width}
+          height={config.fields.aboutImage[0].thumbnails.large.height}
+        />
+      </Box>
+      <Box flex={1} ml={{ base: 0, md: 5 }} mt={{ base: 5, md: 0 }}>
+        <Text>{config.fields.bio}</Text>
+      </Box>
     </Layout>
   );
 };
 
 About.getInitialProps = async (ctx) => {
   try {
-    const res = await axios.get("https://api.studsnstuff.dev/configs/1");
-    const config = res.data;
-    return { config };
+    const configs = await base("Config")
+      .select({
+        view: "Grid view",
+      })
+      .all();
+
+    return { config: configs[0] };
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 

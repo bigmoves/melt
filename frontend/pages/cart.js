@@ -7,82 +7,101 @@ import {
   CloseButton,
 } from "@chakra-ui/react";
 import React from "react";
-import Header from "../components/header";
 import useCart from "../components/useCart";
 import { checkout } from "../utils/stripe";
 import Image from "next/image";
 import Layout from "../components/layout";
 
-const apiHost = "https://api.studsnstuff.dev";
-
 const Cart = ({ config }) => {
-  const { items, total, removeFromCart } = useCart();
-  console.log({ items });
+  const { products, total, removeFromCart } = useCart();
   return (
-    <Layout config={config} collections={[]}>
-      <Flex justifyContent="center">
-        <Flex direction="column">
-          <Flex direction="row">
-            <Heading pb="2vw" flex={1}>
-              Shopping Cart
-            </Heading>
-            <Button colorScheme="blackAlpha" onClick={() => checkout(items)}>
-              Checkout
-            </Button>
-          </Flex>
-          {items.map((item) => (
-            <Flex
-              borderTop="1px solid"
-              borderBottom="1px solid"
-              borderColor="blackAlpha.300"
-              direction="row"
-              alignItems="center"
-              mb="5"
-            >
-              <CloseButton
-                color="palevioletred"
-                pr="2vw"
-                pl="2vw"
-                onClick={() => removeFromCart(item.id)}
-              />
-              {item.image && (
-                <Flex alignItems="center" flexBasis="200px">
-                  <Image
-                    src={`${apiHost}${item.image.url}`}
-                    alt="A pot"
-                    width={item.image.width}
-                    height={item.image.height}
-                  />
-                </Flex>
-              )}
-              <Heading as="h3" size="md" pr="2vw" pl="2vw" flex={1}>
-                {item.title}
-              </Heading>
-              <Box pr="2vw">
-                <Text fontWeight="bold">
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(item.price)}
-                </Text>
-              </Box>
-            </Flex>
-          ))}
-          <Text
-            pb="2vw"
-            pt="2vw"
-            fontSize="x-large"
-            fontWeight="bold"
-            textAlign="right"
+    <Layout
+      config={config}
+      collections={[]}
+      direction="column"
+      justifyContent="flex-start"
+    >
+      <Flex direction={{ base: "column", md: "row" }} mb={[0, 5]}>
+        <Heading pb="2vw" flex={1}>
+          Shopping Cart
+        </Heading>
+        {products.length > 0 && (
+          <Button
+            colorScheme="blackAlpha"
+            onClick={() => checkout(products)}
+            display={{ base: "none", md: "block" }}
           >
-            Subtotal:{" "}
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(total)}
-          </Text>
-        </Flex>
+            Checkout
+          </Button>
+        )}
       </Flex>
+      {products.length === 0 && <Flex flex={1}>No items in cart.</Flex>}
+      {products.map((product) => (
+        <Flex
+          borderTop="1px solid"
+          borderBottom="1px solid"
+          borderColor="blackAlpha.300"
+          direction={{ base: "column", md: "row" }}
+          alignItems="center"
+          pb={{ base: 5, md: 0 }}
+          mb="5"
+        >
+          {product.image && (
+            <Flex alignItems="center" flexBasis="200px">
+              <Image
+                src={product.image.url}
+                alt="A pot"
+                width={product.image.width}
+                height={product.image.height}
+              />
+              <style jsx global>{`
+                img {
+                  border-radius: 5px;
+                }
+              `}</style>
+            </Flex>
+          )}
+          <Heading as="h3" size="md" pr="2vw" pl="2vw" flex={1}>
+            {product.name}
+          </Heading>
+          <Box pr="2vw">
+            <Text fontWeight="bold">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(product.price)}
+            </Text>
+          </Box>
+          <CloseButton
+            color="palevioletred"
+            pr="2vw"
+            pl="2vw"
+            onClick={() => removeFromCart(product.id)}
+          />
+        </Flex>
+      ))}
+      <Text
+        pb="2vw"
+        pt="2vw"
+        fontSize="x-large"
+        fontWeight="bold"
+        textAlign="right"
+      >
+        Subtotal:{" "}
+        {new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(total)}
+      </Text>
+      {products.length > 0 && (
+        <Button
+          colorScheme="blackAlpha"
+          onClick={() => checkout(products)}
+          display={{ base: "blockk", md: "none" }}
+        >
+          Checkout
+        </Button>
+      )}
     </Layout>
   );
 };

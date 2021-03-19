@@ -1,5 +1,5 @@
 module.exports = {
   images: {
-    domains: ["api.studsnstuff.dev"],
+    domains: ["dl.airtable.com"],
   },
 };

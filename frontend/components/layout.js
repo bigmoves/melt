@@ -8,20 +8,20 @@ import Link from "./link";
 const Layout = (props) => {
   const { query } = useRouter();
 
+  const { collections, ...rest } = props;
+
   return (
     <Flex direction="column" minH="100vh">
-      <Header config={props.config} />
-      {props.collections.length > 0 && (
+      <Header />
+      {collections.length > 0 && (
         <Flex p="4vw" alignItems="center" justifyContent="center">
           <Flex justifyContent="space-between" width={250}>
-            {props.collections.map((c) => (
+            {collections.map((c) => (
               <Link
-                href={`/?collection=${c.name.toLowerCase()}`}
-                isActive={
-                  c.name.toLowerCase() === query?.collection?.toLowerCase()
-                }
+                href={`/?collection=${c.toLowerCase()}`}
+                isActive={c.toLowerCase() === query?.collection?.toLowerCase()}
               >
-                {c.name}
+                {c}
               </Link>
             ))}
           </Flex>
@@ -29,22 +29,25 @@ const Layout = (props) => {
       )}
       <Flex pl="4vw" pr="4vw">
         <Box
+          display={{ base: "none", md: "block" }}
           bgImg="url(/wiggle_L.svg)"
           minH="600px"
           flex="0 0 100px"
           backgroundSize="contain"
         ></Box>
         <Flex
-          pl="4vw"
-          pr="4vw"
+          pl={{ base: 0, md: "4vw" }}
+          pr={{ base: 0, md: "4vw" }}
           pb="4vw"
           pt="2vw"
           flex={1}
           justifyContent="center"
+          {...rest}
         >
           {props.children}
         </Flex>
         <Box
+          display={{ base: "none", md: "block" }}
           bgImg="url(/wiggle_R.svg)"
           minH="600px"
           flex="0 0 100px"

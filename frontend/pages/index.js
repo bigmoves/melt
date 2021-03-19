@@ -1,47 +1,39 @@
 import React, { useEffect } from "react";
-import {
-  SimpleGrid,
-  Box,
-  Text,
-  Flex,
-  Divider,
-  Heading,
-  Stack,
-} from "@chakra-ui/react";
-import axios from "axios";
+import { SimpleGrid, Box } from "@chakra-ui/react";
 import Image from "next/image";
-import Header from "../components/header";
 import { useRouter } from "next/router";
-import Link from "../components/link";
-import Logo from "../components/logo";
 import Layout from "../components/layout";
+import uniq from "lodash.uniq";
 
-const apiHost = "https://api.studsnstuff.dev";
+import Airtable from "airtable";
 
-const Item = ({ item }) => {
+const base = new Airtable({ apiKey: "keyTyIzEu5Xh7Wfe9" }).base(
+  "appLtM7uiOSFVdPBl"
+);
+
+const Product = ({ product }) => {
   const router = useRouter();
 
   const handleClick = (e) => {
     e.preventDefault();
-    router.push(`/items/${item.id}`);
+    router.push(`/products/${product.id}`);
   };
 
-  const image = item.images[0];
-  const imageUrl = item ? image.formats.medium.url : "";
+  const image = product?.fields?.images?.[0];
+  const imageUrl = image ? image.thumbnails.large.url : "";
 
   return (
     <Box cursor="pointer" onClick={handleClick}>
-      {item.images.length > 0 ? (
+      {product?.fields?.images?.length > 0 ? (
         <Image
-          className="item-image"
-          src={`${apiHost}${imageUrl}`}
+          src={imageUrl}
           alt="melt"
-          width={image.formats.medium.width}
-          height={image.formats.medium.height}
+          width={image.thumbnails.large.width}
+          height={image.thumbnails.large.height}
         />
       ) : null}
       <style jsx global>{`
-        .item-image {
+        img {
           border-radius: 5px;
         }
       `}</style>
@@ -49,10 +41,16 @@ const Item = ({ item }) => {
   );
 };
 
-const Home = ({ config, collections, error }) => {
+const Home = ({ products, error }) => {
   const { query, push } = useRouter();
+  const collections = uniq(
+    products.map((p) => p.fields.collection).filter((p) => !!p)
+  );
   let collection = collections.find(
-    (c) => c.name.toLowerCase() === query?.collection?.toLowerCase()
+    (c) => c.toLowerCase() === query?.collection?.toLowerCase()
+  );
+  const filteredProducts = products.filter(
+    (p) => p.fields.collection === collection
   );
 
   if (!collection) {
@@ -60,7 +58,7 @@ const Home = ({ config, collections, error }) => {
   }
 
   useEffect(() => {
-    push(`/?collection=${collection.name.toLowerCase()}`);
+    push(`/?collection=${collection.toLowerCase()}`);
   }, []);
 
   if (error) {
@@ -68,11 +66,11 @@ const Home = ({ config, collections, error }) => {
   }
 
   return (
-    <Layout collections={collections} config={config}>
-      {collection.items.length > 0 ? (
+    <Layout collections={collections}>
+      {filteredProducts.length > 0 ? (
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 4, md: 10 }}>
-          {collection.items.map((item) => (
-            <Item key={item.id} item={item} />
+          {filteredProducts.map((p) => (
+            <Product key={p.id} product={p} />
           ))}
         </SimpleGrid>
       ) : null}
@@ -82,18 +80,15 @@ const Home = ({ config, collections, error }) => {
 
 Home.getInitialProps = async (ctx) => {
   try {
-    const collections = await axios
-      .get("https://api.studsnstuff.dev/collections")
-      .then((r) => r.data);
-    const config = await axios
-      .get("https://api.studsnstuff.dev/configs/1")
-      .then((r) => r.data);
-    return {
-      config,
-      collections: collections.sort((a, b) => a.order - b.order),
-    };
+    const products = await base("Products")
+      .select({
+        view: "Grid view",
+      })
+      .all();
+
+    return { products };
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 

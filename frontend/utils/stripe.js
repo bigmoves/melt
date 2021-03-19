@@ -1,17 +1,12 @@
 import axios from "axios";
 
-export const checkout = (items) => {
-  const stripeKey =
-    "pk_test_51IIPU4L5C5ZVC56p35gxNkhAaXzZXxLbU5as3sr9X230tvn7mpwoGTxdMn9RTWZUZNZteUx7HESHH6pC5YYvD5Z000inaW6bMU";
-  // process.env.NODE_ENV === "production"
-  //   ? process.env.STRIPE_PUBLIC_API_KEY_PROD
-  //   : process.env.STRIPE_PUBLIC_API_KEY;
+export const checkout = (products) => {
+  const stripeKey = process.env.NEXT_PUBLIC_STRIPE_API_KEY;
   const stripe = Stripe(stripeKey);
 
-  return axios("https://api.studsnstuff.dev/checkout", {
+  return axios("/api/checkout", {
     method: "post",
-    // withCredentials: true,
-    data: { items },
+    data: { products },
   }).then((res) => {
     stripe
       .redirectToCheckout({

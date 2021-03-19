@@ -3,8 +3,8 @@ import { useRecoilState } from "recoil";
 import Cookies from "js-cookie";
 import { atom } from "recoil";
 
-export const cartItemsState = atom({
-  key: "cartItemsState",
+export const cartProductsState = atom({
+  key: "cartProductsState",
   default: [],
 });
 
@@ -19,26 +19,26 @@ export const cartWiggleState = atom({
 });
 
 export const initCart = () => {
-  const [, setItems] = useRecoilState(cartItemsState);
+  const [, setProducts] = useRecoilState(cartProductsState);
   let [, setTotal] = useRecoilState(cartTotalState);
 
   useEffect(() => {
     const cart = Cookies.getJSON("cart");
-    setItems(cart ? cart : []);
+    setProducts(cart ? cart : []);
     updateTotal(cart, setTotal);
   }, []);
 };
 
-const updateTotal = (items, setTotal) => {
+const updateTotal = (products, setTotal) => {
   let total = 0;
-  items?.forEach((item) => {
-    total += item.price * item.quantity;
+  products?.forEach((product) => {
+    total += product.price * product.quantity;
   });
   setTotal(total);
 };
 
 const useCart = () => {
-  const [items, setItems] = useRecoilState(cartItemsState);
+  const [products, setProducts] = useRecoilState(cartProductsState);
   let [total, setTotal] = useRecoilState(cartTotalState);
   const [wiggle, setWiggle] = useRecoilState(cartWiggleState);
 
@@ -49,22 +49,22 @@ const useCart = () => {
     }, 2000);
   };
 
-  const addToCart = (item) => {
-    const newItems = [...items, { ...item, quantity: 1 }];
-    setItems(newItems);
-    updateTotal(newItems, setTotal);
+  const addToCart = (product) => {
+    const newProducts = [...products, { ...product, quantity: 1 }];
+    setProducts(newProducts);
+    updateTotal(newProducts, setTotal);
     wiggleCart();
-    Cookies.set("cart", newItems);
+    Cookies.set("cart", newProducts);
   };
 
-  const removeFromCart = (itemId) => {
-    const newItems = items.filter((item) => itemId !== item.id);
-    setItems(newItems);
-    updateTotal(newItems, setTotal);
-    Cookies.set("cart", newItems);
+  const removeFromCart = (productId) => {
+    const newProducts = products.filter((product) => productId !== product.id);
+    setProducts(newProducts);
+    updateTotal(newProducts, setTotal);
+    Cookies.set("cart", newProducts);
   };
 
-  return { total, items, setItems, addToCart, removeFromCart, wiggle };
+  return { total, products, setProducts, addToCart, removeFromCart, wiggle };
 };
 
 export default useCart;
