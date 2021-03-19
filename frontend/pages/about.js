@@ -5,9 +5,9 @@ import Layout from "../components/layout";
 
 import Airtable from "airtable";
 
-const base = new Airtable({ apiKey: "keyTyIzEu5Xh7Wfe9" }).base(
-  "appLtM7uiOSFVdPBl"
-);
+const base = new Airtable({
+  apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
+}).base(process.env.NEXT_PUBLIC_AIRTABLE_APP_KEY);
 
 const About = ({ config, error }) => {
   if (error) {
