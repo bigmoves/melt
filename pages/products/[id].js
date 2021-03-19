@@ -18,7 +18,7 @@ import Layout from "../../components/layout";
 
 const base = new Airtable({
   apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
-}).base(prcess.env.NEXT_PUBLIC_AIRTABLE_APP_KEY);
+}).base(process.env.NEXT_PUBLIC_AIRTABLE_APP_KEY);
 
 const stripItemForCart = ({ id, name, quantity, price, images }) => {
   let image = null;

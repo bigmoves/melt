@@ -17,7 +17,7 @@ import Airtable from "airtable";
 
 const base = new Airtable({
   apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
-}).base(prcess.env.NEXT_PUBLIC_AIRTABLE_APP_KEY);
+}).base(process.env.NEXT_PUBLIC_AIRTABLE_APP_KEY);
 
 const Contact = ({ error }) => {
   const { register, handleSubmit, reset, errors } = useForm();
