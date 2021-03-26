@@ -86,6 +86,7 @@ export async function getStaticProps(ctx) {
 
     return {
       props: { products: products.map((p) => ({ id: p.id, ...p.fields })) },
+      revalidate: 60,
     };
   } catch (error) {
     return { props: { error } };
