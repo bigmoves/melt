@@ -48,7 +48,10 @@ function Header(props) {
           as={RiMenu3Fill}
           boxSize={10}
           color="palevioletred"
+          background="transparent"
           onClick={onToggle}
+          _active={{ background: "transparent" }}
+          _focus={{ background: "transparent" }}
         />
       </Flex>
 

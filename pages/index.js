@@ -12,6 +12,7 @@ const base = new Airtable({
 }).base(process.env.NEXT_PUBLIC_AIRTABLE_APP_KEY);
 
 const Product = ({ product }) => {
+  console.log(product);
   const router = useRouter();
 
   const handleClick = (e) => {
@@ -19,12 +20,12 @@ const Product = ({ product }) => {
     router.push(`/products/${product.id}`);
   };
 
-  const image = product?.fields?.images?.[0];
+  const image = product?.images?.[0];
   const imageUrl = image ? image.thumbnails.large.url : "";
 
   return (
     <Box cursor="pointer" onClick={handleClick}>
-      {product?.fields?.images?.length > 0 ? (
+      {product?.images?.length > 0 ? (
         <Image
           src={imageUrl}
           alt="melt"
@@ -44,14 +45,12 @@ const Product = ({ product }) => {
 const Home = ({ products, error }) => {
   const { query, push } = useRouter();
   const collections = uniq(
-    products.map((p) => p.fields.collection).filter((p) => !!p)
+    products.map((p) => p.collection).filter((p) => !!p)
   );
   let collection = collections.find(
     (c) => c.toLowerCase() === query?.collection?.toLowerCase()
   );
-  const filteredProducts = products.filter(
-    (p) => p.fields.collection === collection
-  );
+  const filteredProducts = products.filter((p) => p.collection === collection);
 
   if (!collection) {
     collection = collections[0];
@@ -78,7 +77,7 @@ const Home = ({ products, error }) => {
   );
 };
 
-Home.getInitialProps = async (ctx) => {
+export async function getStaticProps(ctx) {
   try {
     const products = await base("Products")
       .select({
@@ -86,10 +85,12 @@ Home.getInitialProps = async (ctx) => {
       })
       .all();
 
-    return { products };
+    return {
+      props: { products: products.map((p) => ({ id: p.id, ...p.fields })) },
+    };
   } catch (error) {
-    return error;
+    return { props: { error } };
   }
-};
+}
 
 export default Home;
