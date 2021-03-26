@@ -12,7 +12,6 @@ const base = new Airtable({
 }).base(process.env.NEXT_PUBLIC_AIRTABLE_APP_KEY);
 
 const Product = ({ product }) => {
-  console.log(product);
   const router = useRouter();
 
   const handleClick = (e) => {

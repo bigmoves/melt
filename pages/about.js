@@ -17,20 +17,20 @@ const About = ({ config, error }) => {
     <Layout collections={[]} direction={{ base: "column", md: "row" }} flex={1}>
       <Box flex={1}>
         <Image
-          src={`${config.fields.aboutImage[0].thumbnails.large.url}`}
+          src={`${config.aboutImage[0].thumbnails.large.url}`}
           alt="mel"
-          width={config.fields.aboutImage[0].thumbnails.large.width}
-          height={config.fields.aboutImage[0].thumbnails.large.height}
+          width={config.aboutImage[0].thumbnails.large.width}
+          height={config.aboutImage[0].thumbnails.large.height}
         />
       </Box>
       <Box flex={1} ml={{ base: 0, md: 5 }} mt={{ base: 5, md: 0 }}>
-        <Text>{config.fields.bio}</Text>
+        <Text>{config.bio}</Text>
       </Box>
     </Layout>
   );
 };
 
-About.getInitialProps = async (ctx) => {
+export async function getStaticProps(ctx) {
   try {
     const configs = await base("Config")
       .select({
@@ -38,10 +38,10 @@ About.getInitialProps = async (ctx) => {
       })
       .all();
 
-    return { config: configs[0] };
+    return { props: { config: configs[0].fields } };
   } catch (error) {
-    return error;
+    return { props: { error } };
   }
-};
+}
 
 export default About;
