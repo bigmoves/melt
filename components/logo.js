@@ -1,9 +1,16 @@
-import { Icon } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React from "react";
 
 function Logo(props) {
   return (
-    <Icon viewBox="0 0 570 282" width={278} height={137} {...props}>
+    <Box
+      as="svg"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="90.55828857421875 68.98869323730469 395.59552001953125 145.2412872314453"
+      width={200}
+      height={null}
+      {...props}
+    >
       <g id="Layer_1">
         <path
           d="M226.76,155.12c-3.17-15.53-7.88-30.86-14.46-45.29c-2.98-6.53-8.51-16.66-17.34-12.02c-5.9,3.1-8.92,10.53-11.69,16.2
@@ -70,7 +77,7 @@ function Logo(props) {
 		c0.01,0.05,0,0.09,0.01,0.14c0.02,0.15,0.03,0.3,0.03,0.46C274.21,138.76,274.22,138.83,274.21,138.91z"
         />
       </g>
-    </Icon>
+    </Box>
   );
 }
 

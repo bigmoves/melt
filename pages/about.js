@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text, Flex } from "@chakra-ui/react";
 import Image from "next/image";
-import Layout from "../components/layout";
+import NewLayout from "../components/new-layout";
 
 import Airtable from "airtable";
 
@@ -14,19 +14,19 @@ const About = ({ config, error }) => {
     return <div>An error occured: {error.message}</div>;
   }
   return (
-    <Layout collections={[]} direction={{ base: "column", md: "row" }} flex={1}>
-      <Box flex={1}>
-        <Image
-          src={`${config.aboutImage[0].thumbnails.large.url}`}
-          alt="mel"
-          width={config.aboutImage[0].thumbnails.large.width}
-          height={config.aboutImage[0].thumbnails.large.height}
-        />
-      </Box>
-      <Box flex={1} ml={{ base: 0, md: 5 }} mt={{ base: 5, md: 0 }}>
-        <Text>{config.bio}</Text>
-      </Box>
-    </Layout>
+    <NewLayout collections={[]}>
+      <Flex direction="row" justifyContent="center">
+        <Box maxW={700} py={10}>
+          <Image
+            src={`${config.aboutImage[0].thumbnails.large.url}`}
+            alt="mel"
+            width={config.aboutImage[0].thumbnails.large.width}
+            height={config.aboutImage[0].thumbnails.large.height}
+          />
+          <Text mt={3}>{config.bio}</Text>
+        </Box>
+      </Flex>
+    </NewLayout>
   );
 };
 

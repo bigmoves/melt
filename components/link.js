@@ -21,15 +21,13 @@ function Link(props) {
 
   return (
     <NextLink passHref href={href}>
-      <LinkContainer>
-        <ChakraLink
-          {...rest}
-          color={active ? "palevioletred" : "gray.1000"}
-          fontWeight={active ? "bold" : "normal"}
-        >
-          {children}
-        </ChakraLink>
-      </LinkContainer>
+      <ChakraLink
+        {...rest}
+        color={active ? "palevioletred" : "gray.1000"}
+        fontWeight={active ? "bold" : "normal"}
+      >
+        {children}
+      </ChakraLink>
     </NextLink>
   );
 }

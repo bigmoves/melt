@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { SimpleGrid, Box } from "@chakra-ui/react";
+import { SimpleGrid, Box, Stack, Heading, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import Layout from "../components/layout";
+import NewLayout from "../components/new-layout";
 import uniq from "lodash.uniq";
 
 import Airtable from "airtable";
+import Link from "next/link";
 
 const base = new Airtable({
   apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
@@ -64,15 +65,52 @@ const Home = ({ products, error }) => {
   }
 
   return (
-    <Layout collections={collections}>
-      {filteredProducts.length > 0 ? (
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 4, md: 10 }}>
-          {filteredProducts.map((p) => (
-            <Product key={p.id} product={p} />
-          ))}
-        </SimpleGrid>
-      ) : null}
-    </Layout>
+    <NewLayout collections={collections}>
+      <Flex>
+        <Box ml={6} mr={14} mt={10}>
+          <Stack>
+            <Link href="/">
+              <Heading size="sm">All Categories</Heading>
+            </Link>
+            <Link href="/">Neolithic</Link>
+            <Link href="/">Jewelry</Link>
+            <Link href="/">Wiggle</Link>
+          </Stack>
+        </Box>
+        {filteredProducts.length > 0 ? (
+          <>
+            <Box
+              display={{ base: "none", md: "block" }}
+              bgImg="url(/wiggle_L.svg)"
+              minH="600px"
+              flex="0 0 100px"
+              backgroundSize="contain"
+              mt={10}
+              mr={2}
+            ></Box>
+            <SimpleGrid
+              columns={{ base: 1, md: 3 }}
+              spacing={{ base: 4, md: 4 }}
+              mt={10}
+              flex="1"
+            >
+              {filteredProducts.map((p) => (
+                <Product key={p.id} product={p} />
+              ))}
+            </SimpleGrid>
+            <Box
+              display={{ base: "none", md: "block" }}
+              bgImg="url(/wiggle_R.svg)"
+              minH="600px"
+              flex="0 0 100px"
+              backgroundSize="contain"
+              mt={10}
+              ml={2}
+            ></Box>
+          </>
+        ) : null}
+      </Flex>
+    </NewLayout>
   );
 };
 
