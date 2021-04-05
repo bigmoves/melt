@@ -86,6 +86,8 @@ const Collection = ({ collections, products, error }) => {
     <NewLayout collections={collections}>
       <Select
         display={{ base: "block", md: "none" }}
+        borderColor="palevioletred"
+        borderWidth={2}
         placeholder="All Collections"
         onChange={handleCollectionChange}
         value={router.query.slug}
