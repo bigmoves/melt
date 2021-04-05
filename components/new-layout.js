@@ -27,6 +27,7 @@ import Cart from "./cart";
 import useCart from "./useCart";
 import Image from "next/image";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { RiMenu3Fill } from "react-icons/ri";
 
 const CartDrawer = ({ btnRef, isOpen, onClose }) => {
   const { products, removeFromCart } = useCart();
@@ -108,7 +109,7 @@ const CartDrawer = ({ btnRef, isOpen, onClose }) => {
 };
 
 const NewLayout = (props) => {
-  const { query } = useRouter();
+  const { asPath } = useRouter();
   const [scrollTop, setScrollTop] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
@@ -137,10 +138,27 @@ const NewLayout = (props) => {
           boxShadow={scrollTop > 10 && boxShadow}
         >
           <Flex alignItems="center">
-            <Flex flex={1} alignItems="flex-end">
-              <Logo fill="palevioletred" />
-              <Box ml={6}>
-                <Link href="/">Shop</Link>
+            <Flex
+              flex={1}
+              alignItems={{ base: "center", md: "flex-end" }}
+              justifyContent={{ base: "space-between", md: "flex-start" }}
+            >
+              <Link href="/">
+                <Logo fill="palevioletred" />
+              </Link>
+              <IconButton
+                display={{ base: "block", md: "none" }}
+                as={RiMenu3Fill}
+                boxSize={10}
+                color="palevioletred"
+                background="transparent"
+                onClick={() => {}}
+                variant="ghost"
+              />
+              <Box ml={6} display={{ base: "none", md: "block" }}>
+                <Link href="/" isActive={asPath.match(/collections/)}>
+                  Work
+                </Link>
                 <Link href="/about" ml={4}>
                   About
                 </Link>
@@ -149,7 +167,7 @@ const NewLayout = (props) => {
                 </Link>
               </Box>
             </Flex>
-            <Flex justifyContent="flex-end">
+            {/* <Flex justifyContent="flex-end">
               <Box as="button" ref={btnRef} onClick={onOpen}>
                 <Cart
                   className={`cart ${wiggle ? "shake" : ""}`}
@@ -157,18 +175,18 @@ const NewLayout = (props) => {
                 />
               </Box>
               <CartDrawer btnRef={btnRef} isOpen={isOpen} onClose={onClose} />
-            </Flex>
+            </Flex> */}
           </Flex>
         </Box>
       </Box>
-      <Box as="main">
-        <Box ml="auto" mr="auto" px={6}>
+      <Box as="main" minHeight="calc(100vh - 108px)">
+        <Box ml="auto" mr="auto" px={{ base: 2, md: 6 }} height="100%">
           {props.children}
         </Box>
       </Box>
       <Flex
         as="footer"
-        mt={10}
+        mt={{ base: 2, md: 10 }}
         ml="auto"
         mr="auto"
         px={6}

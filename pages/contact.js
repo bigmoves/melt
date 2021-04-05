@@ -14,6 +14,7 @@ import Layout from "../components/layout";
 import { useForm } from "react-hook-form";
 
 import Airtable from "airtable";
+import NewLayout from "../components/new-layout";
 
 const base = new Airtable({
   apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
@@ -46,52 +47,58 @@ const Contact = ({ error }) => {
   };
 
   return (
-    <Layout collections={[]}>
-      <Box
-        as="form"
-        direction="column"
-        width={{ base: "100%", md: "500px" }}
-        onSubmit={handleSubmit(submit)}
-      >
-        <FormControl id="first" pb={5} isInvalid={errors.name}>
-          <FormLabel>Name</FormLabel>
-          <Input
-            borderColor="palevioletred"
-            name="name"
-            ref={register({ required: true })}
-          />
-          <FormErrorMessage>Enter a name</FormErrorMessage>
-        </FormControl>
-        <FormControl id="email" pb={5} isInvalid={errors.email}>
-          <FormLabel>Email</FormLabel>
-          <Input
-            borderColor="palevioletred"
-            name="email"
-            ref={register({ required: true })}
-          />
-          <FormErrorMessage>Enter an email</FormErrorMessage>
-        </FormControl>
-        <FormControl id="message" pb={5} isInvalid={errors.message}>
-          <FormLabel>Message</FormLabel>
-          <Textarea
-            height={200}
-            borderColor="palevioletred"
-            name="message"
-            ref={register({ required: true })}
-          />
-          <FormErrorMessage>Enter a message</FormErrorMessage>
-        </FormControl>
+    <NewLayout collections={[]}>
+      <Flex direction="row" justifyContent="center" mt={100}>
+        <Box
+          as="form"
+          direction="column"
+          width={{ base: "100%", md: "500px" }}
+          onSubmit={handleSubmit(submit)}
+        >
+          <FormControl id="first" pb={5} isInvalid={errors.name}>
+            <FormLabel>Name</FormLabel>
+            <Input
+              borderColor="palevioletred"
+              name="name"
+              ref={register({ required: true })}
+            />
+            <FormErrorMessage>Enter a name</FormErrorMessage>
+          </FormControl>
+          <FormControl id="email" pb={5} isInvalid={errors.email}>
+            <FormLabel>Email</FormLabel>
+            <Input
+              borderColor="palevioletred"
+              name="email"
+              ref={register({ required: true })}
+            />
+            <FormErrorMessage>Enter an email</FormErrorMessage>
+          </FormControl>
+          <FormControl id="message" pb={5} isInvalid={errors.message}>
+            <FormLabel>Message</FormLabel>
+            <Textarea
+              height={200}
+              borderColor="palevioletred"
+              name="message"
+              ref={register({ required: true })}
+            />
+            <FormErrorMessage>Enter a message</FormErrorMessage>
+          </FormControl>
 
-        <Button type="submit" colorScheme="blackAlpha" isLoading={isSubmitting}>
-          Submit
-        </Button>
-        {messageSent && (
-          <Text pt={5} pb={5}>
-            Message sent. Talk to you soon ✨
-          </Text>
-        )}
-      </Box>
-    </Layout>
+          <Button
+            type="submit"
+            colorScheme="blackAlpha"
+            isLoading={isSubmitting}
+          >
+            Submit
+          </Button>
+          {messageSent && (
+            <Text pt={5} pb={5}>
+              Message sent. Talk to you soon ✨
+            </Text>
+          )}
+        </Box>
+      </Flex>
+    </NewLayout>
   );
 };
 

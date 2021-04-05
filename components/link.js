@@ -15,9 +15,9 @@ const LinkContainer = styled(Box)`
 `;
 
 function Link(props) {
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
   const { children, href, isActive, ...rest } = props;
-  const active = pathname === href || isActive;
+  const active = asPath === href || isActive;
 
   return (
     <NextLink passHref href={href}>

@@ -4,17 +4,15 @@ import {
   Heading,
   Text,
   Flex,
-  Stack,
   Button,
   Stat,
   StatNumber,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import Header from "../../components/header";
 import useCart from "../../components/useCart";
 
 import Airtable from "airtable";
-import Layout from "../../components/layout";
+import NewLayout from "../../components/new-layout";
 
 const base = new Airtable({
   apiKey: process.env.NEXT_PUBLIC_AIRTABLE_KEY,
@@ -42,46 +40,44 @@ const Product = ({ product, error }) => {
   }
 
   const image = product?.images?.[0];
-  const imageUrl = image ? image.thumbnails.large.url : "";
+  const imageUrl = image ? image.thumbnails.full.url : "";
 
   return (
-    <Layout collections={[]} direction={{ base: "column", md: "row" }} flex={1}>
-      <Flex flex={{ base: "none", md: 1 }} pr="3vw" alignItems="flex-start">
-        {product?.images?.length > 0 ? (
-          <Image
-            src={imageUrl}
-            alt="melt"
-            width={image.thumbnails.large.width}
-            height={image.thumbnails.large.height}
-            objectFit="contain"
-          />
-        ) : null}
-        <style jsx global>{`
-          img {
-            border-radius: 5px;
-          }
-        `}</style>
-      </Flex>
+    <NewLayout collections={[]}>
+      <Flex height="100%">
+        <Flex flex={1} mr={3} minH="100%">
+          {product?.images?.length > 0 ? (
+            <Image
+              src={imageUrl}
+              alt="melt"
+              width={1050}
+              height={1050}
+              objectFit="cover"
+              quality={100}
+            />
+          ) : null}
+        </Flex>
 
-      <Box flex={1}>
-        <Heading>{product.name}</Heading>
-        <Text>{product.description}</Text>
-        <Stat pb={5}>
-          <StatNumber>
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(product.price)}
-          </StatNumber>
-        </Stat>
-        <Button
-          colorScheme="blackAlpha"
-          onClick={() => addToCart(stripItemForCart(product))}
-        >
-          Add to cart
-        </Button>
-      </Box>
-    </Layout>
+        <Box flex={1} p={5}>
+          <Heading>{product.name}</Heading>
+          <Text>{product.description}</Text>
+          <Stat pb={5}>
+            <StatNumber>
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(product.price)}
+            </StatNumber>
+          </Stat>
+          <Button
+            colorScheme="blackAlpha"
+            onClick={() => addToCart(stripItemForCart(product))}
+          >
+            Add to cart
+          </Button>
+        </Box>
+      </Flex>
+    </NewLayout>
   );
 };
 
