@@ -8,6 +8,7 @@ import {
   DrawerContent,
   DrawerBody,
   Box,
+  DrawerCloseButton,
 } from "@chakra-ui/react";
 import useCart from "./useCart";
 
@@ -47,9 +48,10 @@ const MobileNav = ({ isOpen, onClose, finalFocusRef }) => {
     >
       <DrawerOverlay />
       <DrawerContent bgColor="lavenderblush" pt={2}>
+        <DrawerCloseButton />
         <DrawerBody>
           <Link href="/">
-            <MobileNavLink>Shop</MobileNavLink>
+            <MobileNavLink>Work</MobileNavLink>
           </Link>
           <Link href="/about">
             <MobileNavLink>About</MobileNavLink>
@@ -57,11 +59,11 @@ const MobileNav = ({ isOpen, onClose, finalFocusRef }) => {
           <Link href="/contact">
             <MobileNavLink>Contact</MobileNavLink>
           </Link>
-          <Link href="/cart">
+          {/* <Link href="/cart">
             <MobileNavLink>
               Cart {products.length ? `(${products.length})` : null}
             </MobileNavLink>
-          </Link>
+          </Link> */}
         </DrawerBody>
       </DrawerContent>
     </Drawer>

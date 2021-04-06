@@ -146,7 +146,7 @@ const Collection = ({ collections, products, error }) => {
           flex="1"
         >
           {loading &&
-            Array.from(Array(10)).map((index) => (
+            Array.from(Array(10)).map((_, index) => (
               <Box
                 key={index + "-product"}
                 className="animate-pulse"

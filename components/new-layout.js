@@ -28,6 +28,7 @@ import useCart from "./useCart";
 import Image from "next/image";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { RiMenu3Fill } from "react-icons/ri";
+import MobileNav from "./mobile-nav";
 
 const CartDrawer = ({ btnRef, isOpen, onClose }) => {
   const { products, removeFromCart } = useCart();
@@ -152,9 +153,10 @@ const NewLayout = (props) => {
                 boxSize={10}
                 color="palevioletred"
                 background="transparent"
-                onClick={() => {}}
+                onClick={onOpen}
                 variant="ghost"
               />
+              <MobileNav isOpen={isOpen} onClose={onClose} />
               <Box ml={6} display={{ base: "none", md: "block" }}>
                 <Link href="/" isActive={asPath.match(/collections/)}>
                   Work
