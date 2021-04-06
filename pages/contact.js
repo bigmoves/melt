@@ -48,7 +48,12 @@ const Contact = ({ error }) => {
 
   return (
     <NewLayout collections={[]}>
-      <Flex direction="row" justifyContent="center" mt={100}>
+      <Flex
+        direction="row"
+        justifyContent="center"
+        mt={{ base: null, md: 100 }}
+        mb={{ base: 5, md: null }}
+      >
         <Box
           as="form"
           direction="column"
@@ -88,6 +93,7 @@ const Contact = ({ error }) => {
             type="submit"
             colorScheme="blackAlpha"
             isLoading={isSubmitting}
+            isFullWidth={{ base: true, md: false }}
           >
             Submit
           </Button>
