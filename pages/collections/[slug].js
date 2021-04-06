@@ -57,8 +57,10 @@ const Collection = ({ collections, products, error }) => {
   const [imgWidth, setImageWidth] = React.useState(null);
 
   useEffect(() => {
-    const start = () => {
-      setLoading(true);
+    const start = (route) => {
+      if (route.match(/collections/)) {
+        setLoading(true);
+      }
     };
     const end = () => {
       setLoading(false);
