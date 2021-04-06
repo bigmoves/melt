@@ -9,8 +9,10 @@ import {
   DrawerBody,
   Box,
   DrawerCloseButton,
+  Icon,
 } from "@chakra-ui/react";
 import useCart from "./useCart";
+import { FaInstagram } from "react-icons/fa";
 
 export const MobileNavLink = forwardRef(({ children, icon, ...props }, ref) => {
   return (
@@ -42,7 +44,7 @@ const MobileNav = ({ isOpen, onClose, finalFocusRef }) => {
     <Drawer
       size="xs"
       isOpen={isOpen}
-      placement="left"
+      placement="right"
       onClose={onClose}
       finalFocusRef={finalFocusRef}
     >
@@ -59,6 +61,7 @@ const MobileNav = ({ isOpen, onClose, finalFocusRef }) => {
           <Link href="/contact">
             <MobileNavLink>Contact</MobileNavLink>
           </Link>
+          <Icon mt={5} as={FaInstagram} boxSize={10} color="palevioletred" />
           {/* <Link href="/cart">
             <MobileNavLink>
               Cart {products.length ? `(${products.length})` : null}

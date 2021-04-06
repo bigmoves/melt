@@ -18,6 +18,7 @@ import {
   List,
   ListItem,
   IconButton,
+  Icon,
 } from "@chakra-ui/react";
 import Header from "../components/header";
 import Logo from "../components/logo";
@@ -26,7 +27,7 @@ import Link from "./link";
 import Cart from "./cart";
 import useCart from "./useCart";
 import Image from "next/image";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt, FaInstagram } from "react-icons/fa";
 import { RiMenu3Fill } from "react-icons/ri";
 import MobileNav from "./mobile-nav";
 
@@ -138,7 +139,7 @@ const NewLayout = (props) => {
           background="lavenderblush"
           boxShadow={scrollTop > 10 && boxShadow}
         >
-          <Flex alignItems="center">
+          <Flex alignItems="center" justifyContent={{ md: "space-between" }}>
             <Flex
               flex={1}
               alignItems={{ base: "center", md: "flex-end" }}
@@ -178,6 +179,19 @@ const NewLayout = (props) => {
               </Box>
               <CartDrawer btnRef={btnRef} isOpen={isOpen} onClose={onClose} />
             </Flex> */}
+            <Box>
+              <Link
+                href="https://www.instagram.com/melt_clay/"
+                isExternal={true}
+              >
+                <Icon
+                  display={{ base: "none", md: "block" }}
+                  as={FaInstagram}
+                  boxSize={10}
+                  color="palevioletred"
+                />
+              </Link>
+            </Box>
           </Flex>
         </Box>
       </Box>
