@@ -195,13 +195,16 @@ const NewLayout = (props) => {
         opacity="75%"
         color="white"
       >
-        <Flex direction="column" flex={1}>
+        <Flex direction="column" flex={1} justifyContent="center">
           <Box>
             <Logo fill="white" width={125} />
             <Text fontWeight="bold">Bishop, CA</Text>
           </Box>
           <Divider my={5} borderColor="white" />
-          <Flex justifyContent="space-between">
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            justifyContent="space-between"
+          >
             <Text>© 2021 Melt. All rights reserved.</Text>
             <Text justifyContent="space-between">
               Crafted by Studs 'N Stuff

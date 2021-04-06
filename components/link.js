@@ -3,17 +3,6 @@ import styled from "@emotion/styled";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 
-const LinkContainer = styled(Box)`
-  & a:hover {
-    text-decoration: underline;
-    text-decoration-color: palevioletred;
-    text-decoration-style: wavy;
-    text-underline-position: under;
-    font-weight: bold;
-    color: palevioletred;
-  }
-`;
-
 function Link(props) {
   const { asPath } = useRouter();
   const { children, href, isActive, ...rest } = props;
@@ -22,9 +11,15 @@ function Link(props) {
   return (
     <NextLink passHref href={href}>
       <ChakraLink
-        {...rest}
         color={active ? "palevioletred" : "gray.1000"}
         fontWeight={active ? "bold" : "normal"}
+        _hover={{
+          textDecoration: "underline",
+          textDecorationColor: "palevioletred",
+          textUnderlinePosition: "under",
+          textDecorationStyle: "wavy",
+        }}
+        {...rest}
       >
         {children}
       </ChakraLink>

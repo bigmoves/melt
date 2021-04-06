@@ -61,7 +61,6 @@ const Collection = ({ collections, products, error }) => {
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
-  console.log({ router });
   const openLightbox = (index) => {
     setCurrentImage(index);
     setViewerIsOpen(true);
@@ -75,8 +74,6 @@ const Collection = ({ collections, products, error }) => {
   const handleCollectionChange = (event) => {
     router.push(`/collections/${event.target.value}`);
   };
-
-  console.log(products.map((p) => getImageInfo(p)));
 
   if (error) {
     return <div>An error occured: {error.message}</div>;
@@ -99,8 +96,11 @@ const Collection = ({ collections, products, error }) => {
       <Flex>
         <Box ml={6} mr={14} mt={10} display={{ base: "none", md: "block" }}>
           <Stack>
-            <Link href="/">
+            {/* <Link href="/">
               <Heading size="sm">All Collections</Heading>
+            </Link> */}
+            <Link href={"/collections/all"} fontWeight="bold">
+              All Collections
             </Link>
             {collections.map((c) => (
               <Link href={`/collections/${c.toLowerCase()}`}>{c}</Link>
@@ -161,6 +161,8 @@ const Collection = ({ collections, products, error }) => {
 };
 
 export async function getServerSideProps(ctx) {
+  let filteredProducts = [];
+
   try {
     const products = await base("Products")
       .select({
@@ -172,13 +174,17 @@ export async function getServerSideProps(ctx) {
       products.map((p) => p.get("collection")).filter((p) => !!p)
     );
 
-    const filteredProducts = products
-      .filter(
-        (p) =>
-          p.get("collection") &&
-          p.get("collection").toLowerCase() === ctx.params.slug.toLowerCase()
-      )
-      .map((p) => ({ id: p.id, ...p.fields }));
+    if (ctx.params.slug === "all") {
+      filteredProducts = products.map((p) => ({ id: p.id, ...p.fields }));
+    } else {
+      filteredProducts = products
+        .filter(
+          (p) =>
+            p.get("collection") &&
+            p.get("collection").toLowerCase() === ctx.params.slug.toLowerCase()
+        )
+        .map((p) => ({ id: p.id, ...p.fields }));
+    }
 
     if (!filteredProducts.length) {
       return {
