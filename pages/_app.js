@@ -2,6 +2,7 @@ import { RecoilRoot } from "recoil";
 import { ChakraProvider, extendTheme, CSSReset } from "@chakra-ui/react";
 import Fonts from "../utils/fonts";
 import { initCart } from "../components/useCart";
+import "tailwindcss/tailwind.css";
 
 const theme = extendTheme({
   fonts: {
@@ -28,7 +29,6 @@ function MyApp({ Component, pageProps }) {
     <RecoilRoot>
       <CartProvider>
         <ChakraProvider theme={theme}>
-          <CSSReset />
           <Component {...pageProps} />
         </ChakraProvider>
         <Fonts />

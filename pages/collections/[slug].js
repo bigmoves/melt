@@ -21,14 +21,6 @@ const base = new Airtable({
 }).base(process.env.NEXT_PUBLIC_AIRTABLE_APP_KEY);
 
 const Product = ({ product, onClick }) => {
-  const router = useRouter();
-
-  //   const handleClick = (e) => {
-  //     // e.preventDefault();
-  //     // router.push(`/products/${product.id}`);
-  //     onClick(product.id);
-  //   };
-
   const image = product?.images?.[0];
   const imageUrl = image ? image.thumbnails.full.url : "";
 
@@ -57,9 +49,29 @@ const getImageInfo = (product) => {
 };
 
 const Collection = ({ collections, products, error }) => {
-  const router = useRouter();
+  const Router = useRouter();
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [imgHeight, setImageHeight] = React.useState(null);
+  const [imgWidth, setImageWidth] = React.useState(null);
+
+  useEffect(() => {
+    const start = () => {
+      setLoading(true);
+    };
+    const end = () => {
+      setLoading(false);
+    };
+    Router.events.on("routeChangeStart", start);
+    Router.events.on("routeChangeComplete", end);
+    Router.events.on("routeChangeError", end);
+    return () => {
+      Router.events.off("routeChangeStart", start);
+      Router.events.off("routeChangeComplete", end);
+      Router.events.off("routeChangeError", end);
+    };
+  }, []);
 
   const openLightbox = (index) => {
     setCurrentImage(index);
@@ -72,12 +84,23 @@ const Collection = ({ collections, products, error }) => {
   };
 
   const handleCollectionChange = (event) => {
-    router.push(`/collections/${event.target.value}`);
+    if (!event.target.value) {
+      Router.push(`/collections/all`);
+    } else {
+      Router.push(`/collections/${event.target.value}`);
+    }
   };
 
   if (error) {
     return <div>An error occured: {error.message}</div>;
   }
+
+  useEffect(() => {
+    if (products.length) {
+      setImageHeight(products[0].images[0].thumbnails.large.height);
+      setImageWidth(products[0].images[0].thumbnails.large.width);
+    }
+  }, []);
 
   return (
     <NewLayout collections={collections}>
@@ -87,7 +110,7 @@ const Collection = ({ collections, products, error }) => {
         borderWidth={2}
         placeholder="All Collections"
         onChange={handleCollectionChange}
-        value={router.query.slug}
+        value={Router.query.slug}
       >
         {collections.map((c) => (
           <option value={c.toLowerCase()}>{c}</option>
@@ -107,42 +130,53 @@ const Collection = ({ collections, products, error }) => {
             ))}
           </Stack>
         </Box>
-        {products.length > 0 ? (
-          <>
-            <Box
-              display={{ base: "none", md: "block" }}
-              bgImg="url(/wiggle_L.svg)"
-              minH="600px"
-              flex="0 0 100px"
-              backgroundSize="contain"
-              mt={10}
-              mr={2}
-            ></Box>
-            <SimpleGrid
-              columns={{ base: 1, md: 3 }}
-              spacing={{ base: 1, md: 4 }}
-              mt={{ base: 3, md: 10 }}
-              flex="1"
-            >
-              {products.map((p, index) => (
-                <Product
-                  key={p.id}
-                  product={p}
-                  onClick={() => openLightbox(index)}
-                />
-              ))}
-            </SimpleGrid>
-            <Box
-              display={{ base: "none", md: "block" }}
-              bgImg="url(/wiggle_R.svg)"
-              minH="600px"
-              flex="0 0 100px"
-              backgroundSize="contain"
-              mt={10}
-              ml={2}
-            ></Box>
-          </>
-        ) : null}
+        <Box
+          display={{ base: "none", md: "block" }}
+          bgImg="url(/wiggle_L.svg)"
+          minH="600px"
+          flex="0 0 100px"
+          backgroundSize="contain"
+          mt={10}
+          mr={2}
+        ></Box>
+        <SimpleGrid
+          columns={{ base: 1, md: 3 }}
+          spacing={{ base: 1, md: 4 }}
+          mt={{ base: 3, md: 10 }}
+          flex="1"
+        >
+          {loading &&
+            Array.from(Array(10)).map((index) => (
+              <Box
+                key={index + "-product"}
+                className="animate-pulse"
+                width={"100%"}
+                height={{ base: 290, md: 375 }}
+                border="1px"
+                borderColor="palevioletred"
+                backgroundColor="palevioletred"
+                opacity="20%"
+                mb={2}
+              />
+            ))}
+          {!loading &&
+            products.map((p, index) => (
+              <Product
+                key={p.id}
+                product={p}
+                onClick={() => openLightbox(index)}
+              />
+            ))}
+        </SimpleGrid>
+        <Box
+          display={{ base: "none", md: "block" }}
+          bgImg="url(/wiggle_R.svg)"
+          minH="600px"
+          flex="0 0 100px"
+          backgroundSize="contain"
+          mt={10}
+          ml={2}
+        ></Box>
       </Flex>
 
       {/* -- Image Viewer -- */}
