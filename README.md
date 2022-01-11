@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+# Melt
+
+Melt is site I built for a friend's pottery business. The app uses Next.js and Airtable as the backend.
+
+### Desktop
+![image](https://user-images.githubusercontent.com/3190894/148863911-e7fd554b-db70-4ca7-8f40-eafa43eb0216.png)
+
+### Mobile
+![image](https://user-images.githubusercontent.com/3190894/148863993-59479323-b3b7-4b1d-8670-96f32abe7c68.png)
+
+
 ## Getting Started
 
 First, run the development server:
